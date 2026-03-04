@@ -48,6 +48,7 @@ const Users = () => {
           <tr>
             <th>Username</th>
             <th>Email</th>
+            <th>Last Post</th>
           </tr>
         </thead>
 
@@ -56,6 +57,7 @@ const Users = () => {
             <tr key={user.id}>
               <td>{user.username}</td>
               <td>{user.email}</td>
+              <td>{user.lastPost}</td>
             </tr>
           ))}
         </tbody>
