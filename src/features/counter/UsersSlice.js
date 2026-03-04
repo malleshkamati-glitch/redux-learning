@@ -10,7 +10,9 @@ function waiting() {
 // 1️⃣ Create async thunk
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
-  async (page = 1) => {
+  async (_, { getState }) => {
+    console.log("getState", getState());
+    const page = getState().users.page;
     console.log("fetching ")
     // await waiting();
     const response = await fetch(`https://randomuser.me/api/?results=10&page=${page}&seed=abc`);
