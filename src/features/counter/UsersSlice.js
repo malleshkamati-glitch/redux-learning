@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 
-function waiting(){
+function waiting() {
 
-  return new Promise((res,rej)=>{
-    setTimeout(res,10000);
+  return new Promise((res, rej) => {
+    setTimeout(res, 10000);
   })
 }
 // 1️⃣ Create async thunk
@@ -12,10 +12,20 @@ export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
   async (page = 1) => {
     console.log("fetching ")
-    await waiting();
+    // await waiting();
     const response = await fetch(`https://randomuser.me/api/?results=10&page=${page}&seed=abc`);
     const data = await response.json();
     return { results: data.results, page }; // This becomes action.payload
+  },
+  {
+    condition: (page, { getState }) => {
+      const { users } = getState();
+      if (users.loading) {
+        // If it's already fetching, don't execute the payload creator
+        console.log("Fetch already in progress, skipping...");
+        return false;
+      }
+    }
   }
 );
 
@@ -65,7 +75,7 @@ const usersSlice = createSlice({
         }
 
         state.page = page + 1;
-        state.hasMore = state.users.length < 20;
+        state.hasMore = state.users.length < 200;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
