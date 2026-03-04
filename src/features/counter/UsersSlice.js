@@ -24,7 +24,7 @@ export const fetchUsers = createAsyncThunk(
         try {
           const postResponse = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`);
           const posts = await postResponse.json();
-          // Store the title of their first post
+          // Store the title of their last post
           const lastPost = posts.length > 0 ? posts[posts.length - 1].title : "No posts";
           return { ...user, lastPost };
         } catch (err) {
